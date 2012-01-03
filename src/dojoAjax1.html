@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Demo: Check a Username's Availability</title>
+<link rel="stylesheet" href="js/css/styleEvent.css" media="screen">
+<link rel="stylesheet" href="http://dojotoolkit.org/documentation/tutorials/1.6/resources/style/demo.css" media="screen">
+<script data-dojo-config="async: 1, tlmSiblingOfDojo: 0, isDebug: 1" src="js/dojo/dojo.js"></script>
+		
+<script>
+require(["dojo"], function(dojo) {
+	
+				var availabilityNode = dojo.byId("availabilityNode");
+				var usernameNode = dojo.byId("usernameInput");
+				
+				dojo.connect(usernameNode,"onkeyup",function(){
+					
+					var value = dojo.trim(usernameNode.value);
+					
+					if(value != "") {
+						
+						dojo.xhrGet({
+							
+							url: "http://dojotoolkit.org/documentation/tutorials/1.6/ajax/demo/check-username.php",
+							
+							timeout: 2000,
+							
+							content: {
+								username: value
+							},
+							
+							load: function(result) {
+								if(result == "available") {
+									dojo.addClass(availabilityNode,"demoAvailable");
+									dojo.removeClass(availabilityNode,"demoTaken");
+									availabilityNode.innerHTML = "Username available!";
+								}
+								else {
+									dojo.addClass(availabilityNode,"demoTaken");
+									dojo.removeClass(availabilityNode,"demoAvailable");
+									availabilityNode.innerHTML = "Username taken!  Please try another.";
+								}
+							}
+						});
+					}
+					else {
+						availabilityNode.innerHTML = "";
+					}
+				});
+			});
+		</script>
+	</head>
+	<body>
+		<h1>Demo: Check a Username's Availability</h1>
+
+		<p>Type a username to know its availability.  <em>("dojo" and "sitepen" are taken)</em></p>
+		<br /><br />
+		<strong>Desired Username:  </strong>
+		<input type="text" placeholder="please type your ID" id="usernameInput" size="20">
+		<span id="availabilityNode"></span>
+	</body>
+</html>
