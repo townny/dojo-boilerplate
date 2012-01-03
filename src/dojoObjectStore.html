@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+	<title>Demo: Object Store Demonstration</title>
+		<link rel="stylesheet" href="http://dojotoolkit.org/documentation/tutorials/1.6/resources/style/demo.css" media="screen">
+		<script data-dojo-config="async: 1, tlmSiblingOfDojo: 0, isDebug: 1" src="http://ajax.googleapis.com/ajax/libs/dojo/1.7.0/dojo/dojo.js">
+		</script>
+		<script>
+		require(["dojo", "dojo/store/Memory"], function(dojo, Memory) {
+			
+			var employees = [
+				{name:"Jim", department:"accounting"},
+				{name:"Bill", department:"engineering"},
+				{name:"Mike", department:"sales"},
+				{name:"John", department:"sales"}
+			];
+
+			employeeStore = new dojo.store.Memory({data:employees, idProperty: "name"});
+
+			employeeStore.query({department:"sales"}).forEach(function(employee){
+				
+				alert(employee.name);
+			});
+		});
+</script>
+</head>
+<body>
+<h1>Object Store Demonstration</h1>
+</body>
+</html>

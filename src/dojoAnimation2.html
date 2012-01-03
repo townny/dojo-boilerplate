@@ -1,0 +1,45 @@
+<!DOCTYPE HTML>
+<html lang="en">
+	<head>
+		<meta charset="utf-8">
+		<title>Demo: Border Animation</title>
+		<link rel="stylesheet" href="http://dojotoolkit.org/documentation/tutorials/1.6/animation/demo/style.css" media="screen">
+		<link rel="stylesheet" href="../../resources/style/demo.css" media="screen">
+		
+		<script src="js/dojo/dojo.js"
+		data-dojo-config="async: 1, tlmSiblingOfDojo: 0, isDebug: 1">
+		</script>
+		
+		<script>
+			require(["dojo"], function(dojo){
+					
+					var startButton = dojo.byId("startButton"),
+					reverseButton = dojo.byId("reverseButton"),
+					anim8target = dojo.byId("anim8target");
+
+					dojo.connect(startButton, "onclick", function(evt){
+					dojo.animateProperty({
+						node: anim8target,
+						properties: { borderWidth: 50 }
+					}).play();
+				});
+				dojo.connect(reverseButton, "onclick", function(evt){
+					dojo.animateProperty({
+						node: anim8target,
+						properties: { borderWidth: 1 }
+					}).play();
+				});
+		
+			});
+		</script>
+	</head>
+	<body>
+		<h3>Demo: Border Animation</h3>
+		<button id="startButton">Grow Borders</button>
+		<button id="reverseButton">Shrink Borders</button>
+
+		<div id="anim8target" class="box" style="border-style:outset">
+			<div class="innerBox" align="center"> + Min Kim+ </div>
+		</div>
+	</body>
+</html>

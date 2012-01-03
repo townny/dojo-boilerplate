@@ -1,0 +1,60 @@
+<!DOCTYPE HTML>
+<html lang="en">
+	<head>
+		<meta charset="utf-8">
+		<title>Demo: dojo.when for creation</title>
+
+		<link rel="stylesheet" href="js/css/styleEvent.css" media="screen">
+		<link rel="stylesheet" href="js/demoEvent.css" media="screen">
+		<script data-dojo-config="async: 1, tlmSiblingOfDojo: 0, isDebug: 1" src="js/dojo/dojo.js"></script>
+		<script>
+			function createUserList(node, users){
+				node = dojo.byId(node);
+
+				return dojo.when(
+					users,
+					function(users){
+						dojo.forEach(users, function(user){
+							dojo.create("li", {
+								innerHTML: dojo.toJson(user)
+							}, node);
+						});
+					},
+					function(error){
+						dojo.create("li", {
+							innerHTML: "Error: " + error
+						}, node);
+					}
+				);
+			}
+
+			require(["dojo"], function(dojo) {
+				var users = dojo.xhrGet({
+					url: "http://dojotoolkit.org/documentation/tutorials/1.6/promises/demo/users-mangled.json",
+					handleAs: "json"
+				}).then(function(res){
+					return dojo.map(res, function(user){
+						return {
+							id: user[0],
+							username: user[1],
+							name: user[2]
+						};
+					});
+				});
+
+				createUserList("userlist1", users);
+				createUserList("userlist2",
+					[{ id: 100, username: "username100", name: "User 100" }]);
+			});
+		</script>
+	</head>
+	<body>
+		<h1>Demo: dojo.when for creation</h1>
+
+		<h2>List 1 (from server)</h2>
+		<ul id="userlist1"></ul>
+
+		<h2>List 2 (from static array)</h2>
+		<ul id="userlist2"></ul>
+	</body>
+</html>

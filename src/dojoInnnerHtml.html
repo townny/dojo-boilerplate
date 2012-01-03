@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Demo: DataGrid</title>
+		<link rel="stylesheet" href="http://ajax.googleapis.com/ajax/libs/dojo/1.6/dojo/resources/dojo.css">
+		<link rel="stylesheet" href="http://ajax.googleapis.com/ajax/libs/dojo/1.6/dijit/themes/claro/claro.css">
+		<link rel="stylesheet" href="http://ajax.googleapis.com/ajax/libs/dojo/1.6/dojox/grid/resources/claroGrid.css">
+
+		<link rel="stylesheet" href="http://dojotoolkit.org/documentation/tutorials/1.6/datagrid/demo/style.css" media="screen">
+		<link rel="stylesheet" href="http://dojotoolkit.org/documentation/tutorials/1.6/resources/style/demo.css" media="screen">
+		
+		<style>
+			#container div {
+				cursor: pointer;
+				padding: 5px;
+			}
+		</style>
+		
+		<script data-dojo-config="async: 1, tlmSiblingOfDojo: 0, isDebug: 1" src="http://ajax.googleapis.com/ajax/libs/dojo/1.7.0/dojo/dojo.js">
+		</script>
+		<script>
+			require(["dojo", "dojo/store/JsonRest", "dojo/store/Observable", "dojo/Stateful"], function(dojo, JsonRest, Observable, Stateful) {
+			
+			function viewResults(results){
+				var container = dojo.byId("container");
+				var rows = [];
+
+				// results object provides a forEach method for iteration
+				results.forEach(insertRow);
+
+				results.observe(function(item, removedIndex, insertedIndex){
+					// this will be called any time a item is added, removed, and updates
+					if(removedIndex > -1){
+						removeRow(removedIndex);
+					}
+					if(insertedIndex > -1){
+						insertRow(item, insertedIndex);
+					}
+				}, true); // we can indicate to be notified of object updates as well
+
+				function insertRow(item, i){
+					var tmpl="${name} quantity:${quantity}";
+					var row = dojo.create("div", {
+						innerHTML: String.substitute(tmpl, item, encodeHtml)}, container);}
+
+					rows.splice(i, 0, container.insertBefore(row, rows[i]));
+
+					dojo.connect(row, "click", function(){
+						viewInForm(currentProduct = new dojo.Stateful(item), dojo.byId("form"));
+					});
+				}
+
+				function removeRow(i){
+					dojo.destroy(rows.splice(i, 1)[0]);
+				}
+			
+			function viewInForm(object, form){
+				// copy initial values into form inputs
+				for(var i in object){
+					updateInput(i, null, object.get(i));
+				}
+				// watch for any future changes in the object
+				object.watch(updateInput);
+
+				function updateInput(name, oldValue, newValue){
+					var input = dojo.query("input[name=" + name + "]", form)[0];
+					if(input){
+						input.value = newValue;
+					}
+				}
+			}
+			
+			
+				inventoryStore = new dojo.store.JsonRest({
+					target: "http://dojotoolkit.org/documentation/tutorials/1.6/data_modeling/demo/data/some-query",
+					idProperty: "name",
+					put: function(object, options){
+						if(object.quantity < 0){
+							throw new Error("quantity must not be negative");
+						}
+						// now call the original
+						/*we don't do it here because there is no backend to handle it, return dojo.store.JsonRest.prototype.put.call(this, object, options); */
+					}
+				});
+				inventoryStore = dojo.store.Observable(inventoryStore);
+
+				results = inventoryStore.query("some-query");
+				viewResults(results);
+
+				dojo.connect(dojo.byId("add"), "click", function(){
+					inventoryStore.add({
+						name: "Shoes",
+						category: "Clothing",
+						quantity: 40
+					});
+				});
+
+				dojo.connect(dojo.byId("put-negative"), "click", function(){
+					try{
+						inventoryStore.put({
+							name: "Donuts",
+							category: "Food",
+							quantity: -1
+						}); 
+					}catch(e){
+						alert(e);
+					}
+				});
+
+				dojo.connect(dojo.byId("sell"), "click", function(){
+					currentProduct.set("quantity", currentProduct.quantity - 1);
+				});
+
+				dojo.connect(dojo.byId("save"), "click", function(){
+					for(var i in currentProduct){
+						if(typeof currentProduct[i] != "function" && currentProduct.hasOwnProperty(i)){
+							console.log(i);
+							currentProduct[i] = dojo.query("#form input[name=" + i + "]")[0].value;
+						}
+					}
+					inventoryStore.put(currentProduct);
+				});
+			});
+		</script>
+	</head>
+	<body>
+		<h1>Demo: MVC</h1>
+		<h2>Store Contents</h2>
+		<div id="container"></div>
+
+		<p>Click any item above to load it into the editor below.</p>
+		<form id="form">
+			<div>Name:
+				<input type="text" name="name" />
+			</div>
+			<div>Quantity:
+				<input type="text" name="quantity" />
+			</div>
+			<div>Category:
+				<input type="text" name="category" />
+			</div>
+		</form>
+		<button id="sell">Sell One</button><button id="save">Save</button>
+
+		<h2>Other Actions</h2>
+		<button id="add">Add Shoes</button>
+		<button id="put-negative">Put Negative Quantity (should cause validation error)</button>
+	</body>
+</html>
+
+

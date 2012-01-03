@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Demo: DataGrid</title>
+		<link rel="stylesheet" href="http://ajax.googleapis.com/ajax/libs/dojo/1.6/dojo/resources/dojo.css">
+		<link rel="stylesheet" href="http://ajax.googleapis.com/ajax/libs/dojo/1.6/dijit/themes/claro/claro.css">
+		<link rel="stylesheet" href="http://ajax.googleapis.com/ajax/libs/dojo/1.6/dojox/grid/resources/claroGrid.css">
+
+		<link rel="stylesheet" href="http://dojotoolkit.org/documentation/tutorials/1.6/datagrid/demo/style.css" media="screen">
+		<link rel="stylesheet" href="http://dojotoolkit.org/documentation/tutorials/1.6/resources/style/demo.css" media="screen">
+		
+		<script data-dojo-config="async: 1, tlmSiblingOfDojo: 0, isDebug: 1" src="http://ajax.googleapis.com/ajax/libs/dojo/1.7.0/dojo/dojo.js">
+		</script>
+		<script>
+			require(["dojo", "dojox/grid/DataGrid", "dojo/data/ItemFileWriteStore"], function(dojo, DataGrid, ItemFileWriteStore) {
+			
+			var grid, store;
+			
+				store = new dojo.data.ItemFileWriteStore({
+					url: "http://dojotoolkit.org/documentation/tutorials/1.6/datagrid/demo/hof-batting.json"
+				});
+				grid = new dojox.grid.DataGrid({
+					store: store,
+					query: { id: "*" },
+					structure: [
+						{ name: "First Name", field: "first", width: "84px" },
+						{ name: "Last Name", field: "last", width: "84px" },
+						{ name: "Bats", field: "bats", width: "70px" },
+						{ name: "Throws", field: "throws", width: "70px" },
+						{ name: "G", field: "totalG", width: "60px" },
+						{ name: "AB", field: "totalAB", width: "60px" },
+						{ name: "Games as Batter", field: "totalGAB", width: "120px" },
+						{ name: "R", field: "totalR", width: "60px" },
+						{ name: "RBI", field: "totalRBI", width: "60px" },
+						{ name: "BB", field: "totalBB", width: "60px" },
+						{ name: "K", field: "totalK", width: "60px" },
+						{ name: "H", field: "totalH", width: "60px" },
+						{ name: "2B", field: "total2B", width: "60px" },
+						{ name: "3B", field: "total3B", width: "60px" },
+						{ name: "HR", field: "totalHR", width: "60px" }
+					]
+				}, "grid");
+				
+				
+				grid.startup();
+			});
+		</script>
+	</head>
+	<body class="claro">
+		<h1>Demo: DataGrid Simple Structure</h1>
+
+		<br/>
+		<div id="grid"></div>
+	</body>
+</html>

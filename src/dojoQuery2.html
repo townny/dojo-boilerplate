@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<title>Tutorial: NodeList Events</title>
+		<link rel="stylesheet" href="http://dojotoolkit.org/documentation/tutorials/1.6/using_query/demo/style.css" media="screen">
+		<link rel="stylesheet" href="http://dojotoolkit.org/documentation/tutorials/resources/style/demo.css" media="screen">
+			
+		<script data-dojo-config="async: 1, tlmSiblingOfDojo: 0, isDebug: 1" src="http://ajax.googleapis.com/ajax/libs/dojo/1.7.0/dojo/dojo.js">
+		</script>
+		<script>
+		require(["dojo", "dojo/ready"], function(dojo, ready) {
+			
+			ready(function(){
+				dojo.query(".hookUp").connect("onclick", function(){
+					alert("This button is hooked up!");
+				});
+
+				dojo.query(".hookUpToo").onclick(function(){
+					alert("This button is hooked up too!");
+				});
+			});
+			});
+		</script>
+	</head>
+	<body>
+		<h1>Tutorial: NodeList Events</h1>
+
+		<button class="hookUp demoBtn">Click Me!</button>
+		<button class="hookUpToo demoBtn">Click Me!</button>
+		<button class="hookUpToo demoBtn">Click Me!</button>
+		<button class="hookUp demoBtn">Click Me!</button>
+	</body>
+</html>

@@ -1,0 +1,49 @@
+<html>
+<head>
+<title>Chart AMD</title>
+<script data-dojo-config="async: 1, tlmSiblingOfDojo: 0, isDebug: 1" src="js/dojo/dojo.js"></script>
+<script>
+require(["dojox/charting/Chart2D", "dojox/charting/action2d/Tooltip", "dojox/charting/widget/Legend", "dojo/ready", "dojox/charting/themes/Claro",
+"dojox/charting/action2d/MoveSlice"], 
+         function(Chart2D, Tooltip, Legend, ready, Claro, MoveSlice) {
+
+ready(function() {
+   
+   var pieData = {
+   	January: [9420, 10126, 9803, 15965, 17290, 13165]
+   };
+   
+   var pieChart = new dojox.charting.Chart2D('pieChart1');
+   
+   pieChart.addPlot("default", {
+   type: "Pie",
+   radius: 150,
+   fontColor: "black",
+   labelOffset: "-20"
+   });
+   
+   pieChart.addSeries("January", pieData['January']);
+   
+   new Tooltip(pieChart, "default");
+   new MoveSlice(pieChart, "default");
+   
+   pieChart.setTheme(dojox.charting.themes.Claro);
+   
+   pieChart.resize(400, 400);
+      
+      
+      
+   pieChart.render();
+   
+   var legend1 = new Legend({
+   chart: pieChart
+   }, "pieChart1Legend");
+   
+});
+});
+</script>
+<body>
+<div id="pieChart1"></div>
+
+</body>
+</html>

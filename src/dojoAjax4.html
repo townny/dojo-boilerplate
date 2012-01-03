@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title></title>
+<script data-dojo-config="async: 1, tlmSiblingOfDojo: 0, isDebug: 1" src="http://ajax.googleapis.com/ajax/libs/dojo/1.7.0/dojo/dojo.js"></script>
+<script>
+require(["dojo"], function(dojo) {
+	
+function refreshContent() {
+dojo.xhrGet({
+	
+	url: "http://www3.w3schools.com/ajax/demo_get.asp?t= + Math.random()",
+	
+	load: function(newContent) {
+		dojo.byId("myDiv").innerHTML = newContent;
+	},
+	
+	error: function() {
+		
+	}
+});
+}
+		
+				refreshContent();
+				
+				dojo.connect(dojo.byId("requestButton"),"onclick",refreshContent);
+			
+		});	
+</script>
+</head>
+<body>
+<h2>AJAX</h2>
+<button type="button" id="requestButton">Request data</button>
+<p>Click the button several times to see if the time changes, or if the file is cached.</p>
+<div id="myDiv"></div>
+</body>
+</html>

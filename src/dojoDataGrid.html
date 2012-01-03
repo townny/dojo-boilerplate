@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Demo: DataGrid</title>
+		<link rel="stylesheet" href="http://ajax.googleapis.com/ajax/libs/dojo/1.6/dojo/resources/dojo.css">
+		<link rel="stylesheet" href="http://ajax.googleapis.com/ajax/libs/dojo/1.6/dijit/themes/claro/claro.css">
+		<link rel="stylesheet" href="http://ajax.googleapis.com/ajax/libs/dojo/1.6/dojox/grid/resources/claroGrid.css">
+
+		<link rel="stylesheet" href="http://dojotoolkit.org/documentation/tutorials/1.6/datagrid/demo/style.css" media="screen">
+		<link rel="stylesheet" href="http://dojotoolkit.org/documentation/tutorials/1.6/resources/style/demo.css" media="screen">
+		
+		<script data-dojo-config="async: 1, tlmSiblingOfDojo: 0, isDebug: 1" src="http://ajax.googleapis.com/ajax/libs/dojo/1.7.0/dojo/dojo.js">
+		</script>
+		<script>
+			require(["dojo", "dojox/grid/DataGrid", "dojo/data/ItemFileWriteStore"], function(dojo, DataGrid, ItemFileWriteStore) {
+			
+			var grid, store;
+			
+				store = new dojo.data.ItemFileWriteStore({
+					url: "http://dojotoolkit.org/documentation/tutorials/1.6/datagrid/demo/all-batting.json"
+				});
+				grid = new dojox.grid.DataGrid({
+					store: store,
+					query: { id: "*" },
+					structure: [
+						{
+							noscroll: true,
+							defaultCell: { width: "84px" },
+							cells: [
+								{ name: "First Name", field: "first" },
+								{ name: "Last Name", field: "last" }
+							]
+						},{
+							defaultCell: { width: "60px" },
+							cells: [
+								[
+									{ name: "Bats", field: "bats", width: "70px", rowSpan: 2 },
+									{ name: "Throws", field: "throws", width: "70px", rowSpan: 2 },
+									{ name: "G", field: "totalG" },
+									{ name: "AB", field: "totalAB" },
+									{ name: "R", field: "totalR" },
+									{ name: "RBI", field: "totalRBI" },
+									{ name: "BB", field: "totalBB" },
+									{ name: "K", field: "totalK" }
+								],[
+									{ name: "Games as Batter", field: "totalGAB", colSpan: 2 },
+									{ name: "H", field: "totalH" },
+									{ name: "2B", field: "total2B" },
+									{ name: "3B", field: "total3B" },
+									{ name: "HR", field: "totalHR" }
+								]
+							]
+						}
+					]
+				}, "grid");
+				
+				
+				grid.startup();
+			});
+		</script>
+</head>
+<body>
+<div id="grid"></div>
+</body>
+</html>

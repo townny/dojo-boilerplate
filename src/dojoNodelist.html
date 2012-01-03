@@ -1,0 +1,53 @@
+<!DOCTYPE HTML>
+<html lang="en">
+	<head>
+		<meta charset="utf-8">
+		<title>Tutorial: NodeList Events</title>
+		<link rel="stylesheet" href="http://dojotoolkit.org/documentation/tutorials/1.6/nodelist_extensions/demo/style.css" media="screen">
+		<link rel="stylesheet" href="http://dojotoolkit.org/documentation/tutorials/resources/style/demo.css" media="screen">
+		<link rel="stylesheet" href="http://ajax.googleapis.com/ajax/libs/dojo/1.6/dijit/themes/claro/claro.css">
+			
+		<script data-dojo-config="async: 1, tlmSiblingOfDojo: 0, isDebug: 1" src="http://ajax.googleapis.com/ajax/libs/dojo/1.7.0/dojo/dojo.js">
+		</script>
+		<script>
+			require(["dojo", "dojo/ready"], function(dojo, ready) {
+			
+			ready(function(){
+				dojo.connect(dojo.byId("btn"), "onclick", function(){
+					dojo.query("li.fresh")
+						.addClass("highlight")
+						.onclick(function(evt){
+							alert("I love fresh " + evt.target.innerHTML);
+						})
+						.place(dojo.byId("freshList"))
+					;
+				})
+			});
+			});
+		</script>
+	</head>
+	
+	<body class="claro">
+		<h1>Demo: NodeList Extensions: dojo.query Recap</h1>
+		<button id="btn">Pick out fresh fruits</button>
+
+		<h3>Fresh Fruits</h3>
+		<ul id="freshList"></ul>
+		
+		<h3>Fruits</h3>
+		<ul>
+			<li class="fresh">Apples</li>
+			<li class="fresh">Persimmons</li>
+			<li class="fresh">Grapes</li>
+			<li class="fresh">Fresh Figs</li>
+			<li class="dried">Dates</li>
+			<li class="dried">Raisins</li>
+			<li class="dried">Prunes</li>
+			<li class="fresh dried">Apricots</li>
+			<li class="fresh">Peaches</li>
+			<li class="fresh">Bananas</li>
+			<li class="fresh">Cherries</li>
+		</ul>
+		
+	</body>
+</html>

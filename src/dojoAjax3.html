@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Let Ajax change this TEXT</title>
+<script data-dojo-config="async: 1, tlmSiblingOfDojo: 0, isDebug: 1" src="js/dojo/dojo.js"></script>
+<script>
+require(["dojo"], function(dojo) {});
+
+function loadXMLDoc()
+{
+var xmlhttp;
+if (window.XMLHttpRequest)
+  {// code for IE7+, Firefox, Chrome, Opera, Safari
+  xmlhttp=new XMLHttpRequest();
+  }
+//else
+ // {// code for IE6, IE5
+  //xmlhttp=new ActiveXObject("Microsoft.XMLHTTP");
+  //}
+xmlhttp.onreadystatechange=function()
+  {
+  if (xmlhttp.readyState==4 && xmlhttp.status==200)
+    {
+    dojo.byId("myDiv").innerHTML=xmlhttp.responseText;
+    }
+  }
+xmlhttp.open("GET","http://www3.w3schools.com/ajax/ajax_info.txt",true);
+xmlhttp.send();
+}
+</script>
+</head>
+<body>
+<div id="myDiv"><h2>Let AJAX change this text</h2></div>
+<button type="button" onclick="loadXMLDoc()">Change Content</button>
+</body>
+</html>

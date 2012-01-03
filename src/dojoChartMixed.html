@@ -1,0 +1,76 @@
+<html>
+<title>Mixed Chart</title>
+<link rel="stylesheet" href="style.css" media="screen">
+<link rel="stylesheet" href="http://ajax.googleapis.com/ajax/libs/dojo/1.6/dijit/themes/claro/claro.css"/>
+
+<script data-dojo-config="async: 1, tlmSiblingOfDojo: 0, isDebug: 1" src="js/dojo/dojo.js"></script>
+<script>
+require(["dojox/charting/Chart2D", "dojox/charting/action2d/Tooltip", "dojox/charting/widget/Legend", "dojo/ready", 
+"dojox/charting/action2d/Magnify", "dojox/charting/themes/Claro", "dojox/charting/action2d/Highlight"], 
+         function(Chart2D, Tooltip, Legend, ready, Magnify, Claro, Highlight) {
+
+ready(function() {
+	
+    var Goods = [5500, 5700, 5900, 2000, 5000, 4500];
+	var service = [2000, 5000, 4500, 5500, 5700, 5900];
+		
+	var stacked = [];
+    for(var i = 0; i < Goods.length; i++)
+    {
+    	
+    	 stacked[i] = Goods[i] + service[i];
+    	 //document.write(stacked);
+    	    }
+ 
+    	
+	var chart1 = new Chart2D("simplechart");
+	
+	chart1.addPlot("default", {type: "Lines", markers: true});
+	chart1.addPlot("other1", {type: "Columns", gaps: 5, markers: true});
+	chart1.addPlot("other2", {type: "StackedAreas",markers: true, hAxis: "other x", vAxis: "other y"});
+	
+	chart1.addPlot("Grid", {type: "Grid", hMinorLines: true});
+
+	
+	chart1.addAxis("x", { title: 'Year', labels: [{value:1, text:"2000"} , {value:2, text:"2001"},
+						 		{value:3, text:"2002"}, {value:4, text:"2003"},    
+								{value:5, text:"2004"}, {value:6, text:"2005"},
+								{value:7, text:"2006"}, {value:8, text:"2007"},
+								{value:9, text:"2008"}, {value:10, text:"2009"},
+								{value:11, text:"2010"}]});
+								
+	chart1.addAxis("y", {title: 'Sales', min: 0, max: 20000, vertical: true, fixLower: "major", fixUpper: "major", 
+	minorTickStep:5000, includeZero: true});
+
+    chart1.addAxis("other x", {leftBottom: false});
+    chart1.addAxis("other y", {vertical: true, leftBottom: false, stroke: "green"});
+
+	chart1.addSeries("Goods Sales", Goods);
+	chart1.addSeries("Service Sales", service, {plot: "other1"});
+	chart1.addSeries("Total", stacked, {plot: "other2"});
+	
+	
+	new Tooltip(chart1,"default");
+	new Tooltip(chart1,"other1");
+	new Tooltip(chart1,"other2");	
+		
+	
+    new Magnify(chart1,"default");
+	new Magnify(chart1,"other1");
+	new Magnify(chart1,"other2");
+	
+	new Highlight(chart1,"other1");
+	
+	chart1.setTheme(dojox.charting.themes.Claro);
+	
+	chart1.render();
+	
+	var Legend = new dojox.charting.widget.Legend({ chart: chart1 }, "legend");
+})
+});
+</script>
+<body>
+<div id="simplechart" style="width: 800px; height: 600px;"></div>
+<div id="legend"></div>
+</body>
+</html>

@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Demo: DataGrid</title>
+		<link rel="stylesheet" href="http://ajax.googleapis.com/ajax/libs/dojo/1.6/dojo/resources/dojo.css">
+		<link rel="stylesheet" href="http://ajax.googleapis.com/ajax/libs/dojo/1.6/dijit/themes/claro/claro.css">
+		<link rel="stylesheet" href="http://ajax.googleapis.com/ajax/libs/dojo/1.6/dojox/grid/resources/claroGrid.css">
+
+		<link rel="stylesheet" href="http://dojotoolkit.org/documentation/tutorials/1.6/datagrid/demo/style.css" media="screen">
+		<link rel="stylesheet" href="http://dojotoolkit.org/documentation/tutorials/1.6/resources/style/demo.css" media="screen">
+		
+		<script data-dojo-config="async: 1, tlmSiblingOfDojo: 0, isDebug: 1" src="http://ajax.googleapis.com/ajax/libs/dojo/1.7.0/dojo/dojo.js">
+		</script>
+		<style>
+			#grid {
+				width: 330px;
+			}
+		</style>
+		<script>
+		require(["dojo", "dojox/grid/DataGrid", "dojox/data/CsvStore"], function(dojo, DataGrid, CsvStore) {
+			
+				var store = new dojox.data.CsvStore({
+					url:"http://dojotoolkit.org/documentation/tutorials/1.6/dojo_data/demo/data/movies.csv"
+				});
+				var grid = new dojox.grid.DataGrid({
+					store: store,
+					structure: [
+						{name:"Title", field:"Title", width: "150px"},
+						{name:"Year", field:"Year"},
+						{name:"Producer", field:"Producer"}
+					]
+				}, "grid");
+				grid.startup();
+			});
+		</script>
+	</head>
+	<body class="claro">
+		<h1>Demo: DataGrid with CSV</h1>
+
+		<br/>
+		<div id="grid"></div>
+	</body>
+</html>

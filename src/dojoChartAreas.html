@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Dojo Chart Areas</title>
+<script data-dojo-config="async: 1, tlmSiblingOfDojo: 0, isDebug: 1" src="http://ajax.googleapis.com/ajax/libs/dojo/1.7.0/dojo/dojo.js"></script>
+<script>
+require(["dojo", "dojox/charting/Chart2D", "dojox/charting/themes/PlotKit/orange", "dojox/charting/scaler/linear", "dojox/lang/functional"], 
+function(dojo, Chart2D, orange, linear, functional) {
+	
+var chart, limit = 10, magnitude = 30;
+
+var randomValue = function(){
+  return Math.random() * magnitude;
+};
+
+var makeSeries = function(len){
+    var s = [];
+    do{
+        s.push(randomValue());
+  }while(s.length < len);
+    return s;
+};
+
+var seriesA = makeSeries(limit),
+  seriesB = makeSeries(limit),
+  seriesC = makeSeries(limit);
+  
+var updateTest = function(){
+  seriesA.shift();
+  seriesA.push(randomValue());
+  chart.updateSeries("Series A", seriesA);
+
+  seriesB.shift();
+  seriesB.push(randomValue());
+  chart.updateSeries("Series B", seriesB);
+
+  seriesC.shift();
+  seriesC.push(randomValue());
+  chart.updateSeries("Series C", seriesC);
+  
+  chart.render();
+  setTimeout("updateTest()", 200); 
+};
+
+	
+var makeUpdateableObjects = function() {
+  chart = new Chart2D("testUpdating");
+  chart.setTheme(dojox.charting.themes.PlotKit.orange);
+     chart.addAxis("x", {fixLower: "minor", natural: true, min: 1, max: limit});
+  chart.addAxis("y", {vertical: true, min: 0, max: 30, majorTickStep: 5, minorTickStep: 1});
+  chart.addPlot("default", {type: "Areas"});
+  chart.addSeries("Series A", seriesA);
+  chart.addSeries("Series B", seriesB);
+  chart.addSeries("Series C", seriesC);
+  chart.addPlot("grid", {type: "Grid", hMinorLines: true});
+  chart.render();
+  setTimeout("updateTest", 200);  
+};
+dojo.addOnLoad(makeUpdateableObjects);
+
+});
+
+</script>
+<div id="testUpdating" style="width: 300px; height: 300px;"></div>
+
+</head>
+<body>
+
+</body>
+</html>

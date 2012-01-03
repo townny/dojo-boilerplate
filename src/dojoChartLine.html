@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>dojoChart Line</title>
+<script data-dojo-config="async: 1, tlmSiblingOfDojo: 0, isDebug: 1" src="js/dojo/dojo.js"></script>
+<script>
+require(["dojo", "dojox/charting/Chart2D", "dojox/charting/action2d/Tooltip", "dojox/charting/action2d/Magnify",
+"dojox/charting/action2d/Highlight", "dojox/charting/themes/Claro", "dojox/charting/widget/Legend"], 
+function(dojo, Chart2D, Tooltip, Magnify, Highlight, Claro, Legend) {
+
+var chartData = [10000,9200,11811,12000,7662,13887,14200,12222,12000,10009,11288,12099];
+var chartData2 = [3000,12000,17733,9876,12783,12899,13888,13277,14299,12345,12345,15763];
+var chartData3 = [3000,12000,17733,9876,12783,12899,13888,13277,14299,12345,12345,15763];
+
+	var chart = new dojox.charting.Chart2D("chartNode");
+	chart.setTheme(dojox.charting.themes.Claro);
+
+	chart.addPlot("default", {
+		type: "Lines",
+		markers: true
+			
+	});
+	
+	chart.addAxis("x");
+	chart.addAxis("y", { min: 5000, max: 30000, vertical: true, fixLower: "major", fixUpper: "major" });
+
+	chart.addSeries("Monthly Sales - 2010",chartData);
+	chart.addSeries("Monthly Sales - 2009",chartData2);
+	chart.addSeries("Monthly Sales - 2008",chartData3);
+	
+	new Tooltip(chart,"default");
+	new Magnify(chart,"default");
+	chart.render();
+	
+	
+	chart.connectToPlot("default",function(evt) {
+		console.warn(evt.type," on element ",evt.element," with shape ",evt.shape);
+		var shape = evt.shape, type = evt.type;
+		
+		if(type == "onclick") {
+			
+			var rotateFx = new dojox.gfx.fx.animateTransform({
+				duration: 1200,
+				shape: shape,
+				transform: [
+					{ name: 'rotategAt', start: [0,240,240], end: [360,240,240] }
+				]
+			}).play();
+		}
+		
+		else if(type == "onmouseover") {
+			
+			if(!shape.originalFill) {
+				shape.originalFill = shape.fillStyle;
+			}
+			
+			shape.setFill("red");
+		}
+		
+		else if(type == "onmouseout") {
+			
+			shape.setFill(shape.originalFill);
+		}
+	});
+	
+
+});
+</script>
+</head>
+<body><div id="chartNode" style="width:800px;height:400px;"></div></body>
+
+</html>
